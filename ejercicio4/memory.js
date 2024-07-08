@@ -70,6 +70,21 @@ class Board {
         this.fixedGridElement.className = `fixed-grid has-${columns}-cols`;
     }
 
+    shuffleCards() {
+        for (let i = this.cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.cards[i], this.cards[j]] = [this,this.cards[j], this.cards[i]];
+        }
+    }
+
+    flipDownAllCards() {
+        this.cards.forEach(card => {
+            if (card.isFlipped) {
+                card.toggleFlip();
+            }
+        });
+    }
+
     render() {
         this.#setGridColumns();
         this.gameBoardElement.innerHTML = "";
@@ -79,6 +94,12 @@ class Board {
                 .addEventListener("click", () => this.onCardClicked(card));
             this.gameBoardElement.appendChild(card.element);
         });
+    }
+
+    reset() {
+        this.shuffleCards();
+        this.render();
+        this.flipDownAllCards();
     }
 
     onCardClicked(card) {
