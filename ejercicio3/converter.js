@@ -35,6 +35,7 @@ class CurrencyConverter {
             return null;
         }
     }
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.getElementById("conversion-form");
