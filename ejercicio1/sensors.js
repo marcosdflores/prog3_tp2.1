@@ -47,7 +47,30 @@ class SensorManager {
         }
     }
 
-    async loadSensors(url) {}
+    async loadSensors(url) {
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            data.forEach(sensorData => {
+                if (["temperature", "humidity", "pressure"].includes(sensorData.type)) {
+                    const sensor = new Sensor(
+                        sensorData.id,
+                        sensorData.name,
+                        sensorData.type,
+                        sensorData.value,
+                        sensorData.unit,
+                        sensorData.updated_at
+                    );
+                    this.addSensor(sensor);
+                } else {
+                    console.error("Tipo de sensor desconocido");
+                }
+            });
+            this.render();
+        } catch(error) {
+            console.error(error);
+        }
+    }
 
     render() {
         const container = document.getElementById("sensor-container");
